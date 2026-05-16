@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy Care for Happy Paws - Interactive Platform</title>
+    <!-- Tailwind CSS with custom cozy configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cozy: {
+                            50: '#FFFDF9',
+                            100: '#FEF7EA',
+                            200: '#FBEAD2',
+                            400: '#F4CB8E',
+                            600: '#D99645',
+                            800: '#8C5427',
+                            900: '#4A2A11',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-cozy-50 text-cozy-900 font-sans min-h-screen flex flex-col selection:bg-cozy-200">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="bg-white border-b border-cozy-200/60 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('analyzer')">
+                <div class="p-2 bg-cozy-100 rounded-xl text-cozy-600">
+                    <i data-lucide="sparkles" class="w-6 h-6 fill-current"></i>
+                </div>
+                <span class="text-xl font-black tracking-tight text-cozy-800">Cozy Care for Happy Paws</span>
+            </div>
+            <nav class="flex space-x-1 bg-cozy-100 p-1 rounded-xl">
+                <button id="nav-analyzer" onclick="switchTab('analyzer')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all text-cozy-800 bg-white shadow-sm">
+                    AI Care Analyzer
+                </button>
+                <button id="nav-matching" onclick="switchTab('matching')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all text-cozy-600 hover:text-cozy-900">
+                    Find Experts
+                </button>
+                <button id="nav-bookings" onclick="switchTab('bookings')" class="px-3 py-1.5 rounded-lg font-bold text-xs transition-all text-cozy-600 hover:text-cozy-900 flex items-center gap-1">
+                    My Bookings 
+                    <span id="bookingBadge" class="hidden bg-cozy-600 text-white px-1.5 py-0.5 rounded-full text-[10px]">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6">
+        
+        <!-- SECTION 1: AI CARE ANALYZER -->
+        <section id="section-analyzer" class="space-y-6">
+            <div class="text-center max-w-xl mx-auto my-4 space-y-2">
+                <span class="bg-cozy-200 text-cozy-800 text-xs font-bold px-3 py-1 rounded-full">✨ Interactive Smart Diagnostics</span>
+                <h1 class="text-3xl font-black text-cozy-900 tracking-tight sm:text-4xl">Cozy Care for Happy Paws</h1>
+                <p class="text-cozy-800/70 text-sm">Calculate true baseline weight goals and scan commercial nutrition labels side-by-side with your pet's biometric profile.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- Left Control Panel (Form + Image Scan Mockup) -->
+                <div class="lg:col-span-5 space-y-4">
+                    
+                    <!-- Form Container -->
+                    <div class="bg-white p-5 rounded-2xl border-2 border-cozy-200/50 shadow-sm space-y-4">
+                        <h2 class="text-sm font-bold text-cozy-800 flex items-center gap-2">
+                            <i data-lucide="paw-print" class="w-4 h-4 text-cozy-600"></i> Step 1: Pet Metrics
+                        </h2>
+                        
+                        <form id="petForm" class="space-y-3.5">
+                            <div>
+                                <label class="block text-xs font-bold text-cozy-800 mb-1">Companion Archetype</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <label class="border-2 border-cozy-600 bg-cozy-100/50 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all" id="label-dog">
+                                        <input type="radio" name="petType" value="Dog" checked class="hidden" onchange="togglePetType('Dog')">
+                                        <i data-lucide="dog" class="w-4 h-4 text-cozy-600"></i> <span class="font-bold text-xs text-cozy-800">Doggo</span>
+                                    </label>
+                                    <label class="border-2 border-slate-200 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all hover:bg-cozy-50" id="label-cat">
+                                        <input type="radio" name="petType" value="Cat" class="hidden" onchange="togglePetType('Cat')">
+                                        <i data-lucide="cat" class="w-4 h-4 text-slate-400"></i> <span class="font-bold text-xs text-slate-600">Kitty</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-cozy-800 mb-1">Name</label>
+                                    <input type="text" id="petName" required placeholder="e.g., Nugget" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-cozy-50/30">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-cozy-800 mb-1">Breed Family</label>
+                                    <select id="petBreed" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-white">
+                                        <!-- Populated via JS -->
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-cozy-800 mb-1">Age (Years)</label>
+                                    <input type="number" id="petAge" required min="0" max="25" step="0.1" placeholder="e.g., 0.5" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-cozy-50/30">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-cozy-800 mb-1">Current Mass (kg)</label>
+                                    <input type="number" id="petWeight" required step="0.1" placeholder="e.g., 2.5" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-cozy-50/30">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold text-cozy-800 mb-1">Primary Metabolic Focus</label>
+                                <select id="healthConcern" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-white">
+                                    <option value="None">Standard Wellness Maintenance</option>
+                                    <option value="Joints">Joint & Bone Structural Warning</option>
+                                    <option value="Weight">Weight Management Focus</option>
+                                    <option value="Skin">Sensitive Skin / Allergy Management</option>
+                                    <option value="Digestion">Gastrointestinal / Sensitive Tummy</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Nutrition Label Scanner Mockup -->
+                    <div class="bg-white p-5 rounded-2xl border-2 border-cozy-200/50 shadow-sm space-y-3">
+                        <h2 class="text-sm font-bold text-cozy-800 flex items-center gap-2">
+                            <i data-lucide="camera" class="w-4 h-4 text-cozy-600"></i> Step 2: Food Label Cross-Analysis
+                        </h2>
+                        <p class="text-[11px] text-cozy-600/80 leading-relaxed">Simulate uploading a photo of your commercial food packaging to verify alignment with customized macro requirements.</p>
+                        
+                        <div class="border-2 border-dashed border-cozy-200 rounded-xl p-3 bg-cozy-50/50 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-cozy-100/40 transition-all relative" onclick="triggerMockUpload()">
+                            <input type="file" id="realUpload" class="hidden" accept="image/*" onchange="handleFileSelect()">
+                            <div id="uploadUiState" class="space-y-1">
+                                <i data-lucide="upload-cloud" class="w-5 h-5 text-cozy-600 mx-auto"></i>
+                                <p class="text-xs font-bold text-cozy-800" id="uploadStatus">Tap to select label asset simulation</p>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown choices -->
+                        <div class="space-y-1">
+                            <label class="block text-[10px] font-bold text-cozy-600 uppercase">Select Target Label Mockup:</label>
+                            <select id="mockLabelData" onchange="updateScannedValues()" class="w-full px-3 py-1.5 border border-cozy-200 rounded-xl text-xs bg-white">
+                                <option value="kibble_regular">Standard Adult Blend</option>
+                                <option value="kibble_high_protein">Growth Performance Feed</option>
+                                <option value="kibble_diet">Weight Control Formula</option>
+                            </select>
+                        </div>
+
+                        <!-- EDITABLE DETECTED NUTRITION VALUES -->
+                        <div class="bg-cozy-100/40 p-3.5 rounded-xl border border-cozy-200/60 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-black text-cozy-800 uppercase tracking-wide flex items-center gap-1">
+                                    <i data-lucide="scan" class="w-3 h-3 text-cozy-600"></i> Simulated Label Content Detected:
+                                </span>
+                                <span class="text-[9px] bg-cozy-200 text-cozy-800 font-bold px-1.5 py-0.5 rounded-md">Editable Fields</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-cozy-700 mb-0.5">Protein (%)</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="scannedProtein" min="0" max="100" class="w-full pl-2 pr-5 py-1 border border-cozy-200 rounded-lg text-xs font-bold text-cozy-900 focus:outline-none focus:border-cozy-400">
+                                        <span class="absolute right-2 text-[10px] font-bold text-cozy-400">%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-cozy-700 mb-0.5">Fat (%)</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="scannedFat" min="0" max="100" class="w-full pl-2 pr-5 py-1 border border-cozy-200 rounded-lg text-xs font-bold text-cozy-900 focus:outline-none focus:border-cozy-400">
+                                        <span class="absolute right-2 text-[10px] font-bold text-cozy-400">%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-cozy-700 mb-0.5">Fiber (%)</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="scannedFiber" min="0" max="100" class="w-full pl-2 pr-5 py-1 border border-cozy-200 rounded-lg text-xs font-bold text-cozy-900 focus:outline-none focus:border-cozy-400">
+                                        <span class="absolute right-2 text-[10px] font-bold text-cozy-400">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="executeCoreAnalysis()" class="w-full bg-cozy-600 hover:bg-cozy-800 text-white font-bold py-2.5 px-4 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2 text-xs">
+                            <i data-lucide="binary" class="w-4 h-4"></i> Process & Compute Analysis
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Right Side Output Dashboard -->
+                <div class="lg:col-span-7">
+                    
+                    <!-- Empty State Placeholder -->
+                    <div id="reportPlaceholder" class="bg-white border-2 border-dashed border-cozy-200 rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[500px]">
+                        <div class="w-14 h-14 bg-cozy-100 rounded-full flex items-center justify-center mb-3 text-cozy-600">
+                            <i data-lucide="scale" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-cozy-800">Diagnostic dashboard offline</h3>
+                        <p class="text-xs text-cozy-600/70 max-w-xs mt-1">Complete your companion metrics, choose a label package simulation, and hit 'Process & Compute'.</p>
+                    </div>
+
+                    <!-- Core Evaluation Card Stack -->
+                    <div id="reportOutput" class="hidden bg-white border-2 border-cozy-200/60 rounded-2xl shadow-sm overflow-hidden space-y-5 p-5 animate-in fade-in duration-200">
+                        
+                        <!-- Header Banner -->
+                        <div class="bg-gradient-to-r from-cozy-600 to-cozy-800 p-4 -mx-5 -mt-5 text-white flex justify-between items-center">
+                            <div>
+                                <span class="bg-white/20 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md" id="repTag">--</span>
+                                <h3 class="text-lg font-black mt-0.5" id="repTitle">--</h3>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[10px] opacity-75 uppercase block font-bold">Biometric Engine</span>
+                                <span class="text-xs font-mono" id="repTimestamp">v2.4-Active</span>
+                            </div>
+                        </div>
+
+                        <!-- Target Weight Action Header Box -->
+                        <div id="weightDirectionBanner" class="p-4.5 rounded-xl border flex gap-3 items-center">
+                            <!-- Injected dynamically via JS -->
+                        </div>
+
+                        <!-- Metric Score Cards Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div class="bg-cozy-50 p-2.5 rounded-xl text-center border border-cozy-100">
+                                <span class="text-[10px] text-cozy-600 block font-bold uppercase">Current Weight</span>
+                                <span class="text-sm font-black text-cozy-900 mt-0.5 block" id="repCurrentWeight">--</span>
+                            </div>
+                            <div class="bg-cozy-50 p-2.5 rounded-xl text-center border border-cozy-100">
+                                <span class="text-[10px] text-cozy-600 block font-bold uppercase">Ideal Adult Target</span>
+                                <span class="text-sm font-black text-cozy-900 mt-0.5 block" id="repTargetWeight">--</span>
+                            </div>
+                            <div class="bg-cozy-50 p-2.5 rounded-xl text-center border border-cozy-100">
+                                <span class="text-[10px] text-cozy-600 block font-bold uppercase">Daily Fuel Need</span>
+                                <span class="text-sm font-black text-cozy-900 mt-0.5 block" id="repCalories">--</span>
+                            </div>
+                            <div class="bg-sky-50/60 p-2.5 rounded-xl text-center border border-sky-100">
+                                <span class="text-[10px] text-sky-800 block font-bold uppercase">Hydration Volume</span>
+                                <span class="text-sm font-black text-sky-900 mt-0.5 block" id="repWater">--</span>
+                            </div>
+                        </div>
+
+                        <!-- SCANNER MATCH VERDICT BOX -->
+                        <div id="labelMatchVerdictBox" class="p-4 rounded-xl border space-y-2">
+                            <!-- Dynamic evaluation of package vs profile gets parsed here -->
+                        </div>
+
+                        <!-- Dynamic Macro Charts -->
+                        <div class="bg-cozy-50/50 p-4 rounded-xl border border-cozy-100 space-y-3">
+                            <h4 class="text-xs font-bold text-cozy-800/60 uppercase tracking-wider">Optimal Target Nutritional Distribution</h4>
+                            <div class="space-y-2">
+                                <div>
+                                    <div class="flex justify-between text-[11px] font-bold mb-0.5">
+                                        <span class="text-cozy-800">Target Protein Minimum</span>
+                                        <span class="text-cozy-600" id="pctProtein">--</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div id="barProtein" class="bg-cozy-600 h-full rounded-full transition-all duration-300"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[11px] font-bold mb-0.5">
+                                        <span class="text-cozy-800">Target Lipids & Fats</span>
+                                        <span class="text-cozy-600" id="pctFat">--</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                        <div id="barFat" class="bg-cozy-400 h-full rounded-full transition-all duration-300"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Written Parameters Column layout -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="space-y-1 bg-cozy-50/30 p-3 rounded-xl border border-cozy-100/60">
+                                <h4 class="font-bold text-cozy-900 flex items-center gap-1.5">
+                                    <i data-lucide="utensils" class="w-3.5 h-3.5 text-cozy-600"></i> Routine Instruction
+                                </h4>
+                                <p class="text-cozy-800/80 leading-relaxed" id="repDietary"></p>
+                            </div>
+                            <div class="space-y-1 bg-cozy-50/30 p-3 rounded-xl border border-cozy-100/60">
+                                <h4 class="font-bold text-cozy-900 flex items-center gap-1.5">
+                                    <i data-lucide="activity" class="w-3.5 h-3.5 text-cozy-600"></i> Fitness Guidelines
+                                </h4>
+                                <p class="text-cozy-800/80 leading-relaxed" id="repFitness"></p>
+                            </div>
+                        </div>
+
+                        <!-- Bridge Link to Specialist view -->
+                        <div class="bg-cozy-100/40 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-3 border border-cozy-200/60 text-xs">
+                            <div class="text-center sm:text-left">
+                                <h4 class="font-bold text-cozy-900">Label scanning flags left you confused?</h4>
+                                <p class="text-cozy-800/70 text-[11px]">Coordinate live consultation review loops with a verification companion.</p>
+                            </div>
+                            <button onclick="switchTab('matching')" class="px-3 py-1.5 bg-cozy-800 hover:bg-cozy-900 text-white font-bold rounded-lg transition-colors whitespace-nowrap text-[11px]">
+                                Consult Expert List
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: EXPERT DIRECTORY -->
+        <section id="section-matching" class="hidden space-y-6">
+            <div class="text-center max-w-xl mx-auto my-4 space-y-2">
+                <span class="bg-cozy-200 text-cozy-800 text-xs font-bold px-3 py-1 rounded-full">🐾 Safe Synthetic Experts</span>
+                <h1 class="text-3xl font-black text-cozy-900 tracking-tight">Cozy Guidance Advisors</h1>
+                <p class="text-cozy-800/70 text-sm">Lock in appointments with friendly automated platform bots specializing in custom macronutrient balancing routines.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="nutritionistGrid">
+                <!-- Dynamically Populated -->
+            </div>
+        </section>
+
+        <!-- SECTION 3: BOOKINGS DASHBOARD -->
+        <section id="section-bookings" class="hidden space-y-6">
+            <div class="text-center max-w-xl mx-auto my-4 space-y-2">
+                <span class="bg-cozy-200 text-cozy-800 text-xs font-bold px-3 py-1 rounded-full">🗓️ Agenda Monitoring Desk</span>
+                <h1 class="text-3xl font-black text-cozy-900 tracking-tight">Your Confirmed Schedule</h1>
+                <p class="text-cozy-800/70 text-sm">Track active video slots, view confirmation credentials, or explore interactive past historical check-ins.</p>
+            </div>
+            <div class="max-w-2xl mx-auto space-y-4">
+                
+                <!-- Dynamic Upcoming Container -->
+                <div class="bg-white p-5 rounded-2xl border-2 border-cozy-200/50 shadow-sm space-y-3">
+                    <h3 class="text-xs font-bold text-cozy-900 uppercase tracking-wide flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Dynamic Upcoming Timeline
+                    </h3>
+                    <div id="upcomingContainer" class="space-y-3">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- NEW: BOOKING HISTORY LOG WITH ACTIVE MODAL DETAIL TRIGGER -->
+                <div class="bg-white p-5 rounded-2xl border-2 border-cozy-200/50 shadow-sm space-y-3">
+                    <h3 class="text-xs font-bold text-cozy-800 uppercase tracking-wide flex items-center gap-2">
+                        <i data-lucide="history" class="w-4 h-4 text-cozy-600"></i> Historic Care Check-ins (Click rows to view details)
+                    </h3>
+                    <div id="historyContainer" class="divide-y divide-cozy-100 text-xs text-cozy-700">
+                        <!-- Populated dynamically via JS arrays -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- BOOKING APPOINTMENT MODAL -->
+    <div id="bookingModal" class="fixed inset-0 bg-cozy-900/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-xl border-2 border-cozy-200 overflow-hidden animate-in zoom-in-95 duration-150">
+            <div class="p-4 border-b border-cozy-100 flex justify-between items-center bg-cozy-50">
+                <h3 class="font-black text-cozy-900 text-sm">Reserve Consultation Node</h3>
+                <button onclick="closeBookingModal()" class="text-cozy-600 hover:text-cozy-900 p-1 bg-white border border-cozy-200 rounded-lg">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <form id="bookingForm" onsubmit="confirmBooking(event)" class="p-5 space-y-4">
+                <input type="hidden" id="expertId">
+                <div class="flex items-center gap-3 bg-cozy-100 p-3 rounded-xl">
+                    <div id="modalExpertIcon" class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg font-bold shadow-sm"></div>
+                    <div>
+                        <h4 class="font-bold text-cozy-900 text-xs" id="modalExpertName">--</h4>
+                        <p class="text-[11px] text-cozy-600 leading-tight" id="modalExpertSpecialty">--</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[10px] font-bold text-cozy-800 mb-1">Select Date</label>
+                        <input type="date" required id="bookingDate" class="w-full px-3 py-2 border-2 border-cozy-100 rounded-xl focus:outline-none text-xs bg-cozy-50/50">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-cozy-800 mb-1">Select Hour Slot</label>
+                        <select required id="bookingTime" class="w-full px-3 py-2 border-2 border-cozy-100 rounded-xl focus:outline-none text-xs bg-white">
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="01:30 PM">01:30 PM</option>
+                            <option value="03:00 PM">03:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-cozy-600 hover:bg-cozy-800 text-white font-bold py-2 px-4 rounded-xl transition-colors text-xs shadow-sm">
+                    Finalize Time Selection
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- NEW: HISTORY DETAILS VIEW MODAL -->
+    <div id="historyDetailsModal" class="fixed inset-0 bg-cozy-900/40 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-xl border-2 border-cozy-200 overflow-hidden animate-in zoom-in-95 duration-150">
+            <div class="p-4 border-b border-cozy-100 flex justify-between items-center bg-cozy-50">
+                <h3 class="font-black text-cozy-900 text-sm">Historical Summary Record</h3>
+                <button onclick="closeHistoryModal()" class="text-cozy-600 hover:text-cozy-900 p-1 bg-white border border-cozy-200 rounded-lg">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div class="p-5 space-y-4 text-xs">
+                <div class="flex items-center gap-3 bg-cozy-50 p-2.5 rounded-xl border border-cozy-100">
+                    <div id="histModalIcon" class="w-9 h-9 rounded-lg flex items-center justify-center text-white text-base font-bold"></div>
+                    <div>
+                        <h4 id="histModalName" class="font-black text-cozy-900"></h4>
+                        <p id="histModalSpecialty" class="text-[10px] text-cozy-600"></p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 bg-cozy-100/30 p-2.5 rounded-xl text-[11px]">
+                    <div><span class="text-cozy-600 block">Session Date:</span> <span id="histModalDate" class="font-bold"></span></div>
+                    <div><span class="text-cozy-600 block">Status Flag:</span> <span class="text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">Archived/Verified</span></div>
+                </div>
+                <div class="space-y-1">
+                    <span class="font-bold text-cozy-900 block uppercase text-[10px] tracking-wide">Consultation Outcome Summary Notes:</span>
+                    <p id="histModalNotes" class="text-cozy-800 leading-relaxed bg-cozy-50 p-3 rounded-xl border border-cozy-100"></p>
+                </div>
+                <button onclick="closeHistoryModal()" class="w-full bg-cozy-800 hover:bg-cozy-900 text-white font-bold py-2 rounded-xl transition-colors text-xs shadow-sm">
+                    Dismiss Summary Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST ALERTS -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-cozy-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 hidden z-50">
+        <div class="w-5 h-5 bg-cozy-400 rounded-full flex items-center justify-center text-cozy-900">
+            <i data-lucide="check" class="w-3 h-3"></i>
+        </div>
+        <div class="text-xs font-bold" id="toastMessage">Done!</div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-cozy-200 py-5 text-center text-[11px] text-cozy-600/60 mt-12">
+        &copy; 2026 Cozy Care for Happy Paws Platform. Fully simulated calculations.
+    </footer>
+
+    <!-- LOGIC SYSTEM & SEED DATA -->
+    <script>
+        const breedBaselines = {
+            "Golden Retriever": { min: 25.0, max: 34.0, avgIdeal: 29.5 },
+            "French Bulldog":   { min: 9.0,  max: 13.0, avgIdeal: 11.0 },
+            "Chihuahua":        { min: 1.5,  max: 3.0,  avgIdeal: 2.2  },
+            "Pug":              { min: 6.0,  max: 8.0,  avgIdeal: 7.0  },
+            "Corgi":            { min: 10.0, max: 14.0, avgIdeal: 12.0 },
+            "Mixed Breed (Dog)":{ min: 5.0,  max: 25.0, avgIdeal: 15.0 },
+            "Persian":          { min: 3.5,  max: 5.5,  avgIdeal: 4.5  },
+            "Maine Coon":       { min: 5.0,  max: 9.0,  avgIdeal: 7.0  },
+            "Siamese":          { min: 3.0,  max: 4.5,  avgIdeal: 3.8  },
+            "British Shorthair":{ min: 4.0,  max: 7.5,  avgIdeal: 5.7  },
+            "Ragdoll":          { min: 4.5,  max: 8.0,  avgIdeal: 6.2  },
+            "Domestic Shorthair":{ min: 3.5, max: 5.0,  avgIdeal: 4.2  }
+        };
+
+        const breedList = {
+            Dog: ["Golden Retriever", "French Bulldog", "Chihuahua", "Pug", "Corgi", "Mixed Breed (Dog)"],
+            Cat: ["Persian", "Maine Coon", "Siamese", "British Shorthair", "Ragdoll", "Domestic Shorthair"]
+        };
+
+        const labelPresets = {
+            kibble_regular:      { protein: 24, fat: 12, fiber: 5  },
+            kibble_high_protein: { protein: 38, fat: 20, fiber: 4  },
+            kibble_diet:         { protein: 18, fat: 8,  fiber: 11 }
+        };
+
+        const nutritionists = [
+            { id: 1, name: "Consultant Whiskers-Bot", specialty: "Skeletal Growth & Structural Balancer", experience: "Engine v2.1", rating: "4.9", color: "bg-amber-400", initials: "🐾", bio: "Fictional automated profile calibrated for growth trajectories in puppy configurations." },
+            { id: 2, name: "Paws-Advisor Barnaby", specialty: "Feline Liquid Retention & Moisture Balance", experience: "Engine v4.0", rating: "4.8", color: "bg-orange-400", initials: "🐈", bio: "Specialized synthetic module optimizing moisture calculations for domestic indoor cats." },
+            { id: 3, name: "Nutri-Bot Sparky Alpha", specialty: "Allergen Exclusion & Skin Barrier Control", experience: "Module v1.2", rating: "5.0", color: "bg-yellow-500", initials: "🐕", bio: "Simulated framework focusing on novel protein profiles to isolate reactive food symptoms." }
+        ];
+
+        // SEED STATIC BOOKING HISTORY ARRAY WITH CUSTOM OUTCOME DETAILS
+        const historicBookings = [
+            {
+                id: 101,
+                name: "Consultant Whiskers-Bot",
+                specialty: "Skeletal Growth & Structural Balancer",
+                date: "Jan 14, 2026",
+                color: "bg-amber-400",
+                initials: "🐾",
+                notes: "Initial diagnostic room session completed. Evaluated macro targets against base growth charts. Confirmed body configuration index checks out beautifully. Instructed client to retain clean water targets adjacent to feeding plates."
+            },
+            {
+                id: 102,
+                name: "Nutri-Bot Sparky Alpha",
+                specialty: "Allergen Exclusion & Skin Barrier Control",
+                date: "Nov 08, 2025",
+                color: "bg-yellow-500",
+                initials: "🐕",
+                notes: "Skin barrier evaluation review. Confirmed secondary flare-up indicators around paws were tracking directly to chicken-byproduct protein allergens. Transitioned template profile successfully to an explicit single-source hydrolyzed venison baseline."
+            }
+        ];
+
+        let activeBookings = [];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            togglePetType('Dog');
+            updateScannedValues(); 
+            renderNutritionists();
+            renderBookings();
+            renderHistoryLog();
+            document.getElementById('bookingDate').min = new Date().toISOString().split('T')[0];
+        });
+
+        function updateScannedValues() {
+            const presetKey = document.getElementById('mockLabelData').value;
+            const data = labelPresets[presetKey];
+            if(data) {
+                document.getElementById('scannedProtein').value = data.protein;
+                document.getElementById('scannedFat').value = data.fat;
+                document.getElementById('scannedFiber').value = data.fiber;
+            }
+        }
+
+        function togglePetType(type) {
+            const labelDog = document.getElementById('label-dog');
+            const labelCat = document.getElementById('label-cat');
+            const select = document.getElementById('petBreed');
+
+            select.innerHTML = '';
+            breedList[type].forEach(b => {
+                let opt = document.createElement('option');
+                opt.value = b; opt.textContent = b;
+                select.appendChild(opt);
+            });
+
+            if (type === 'Dog') {
+                labelDog.className = "border-2 border-cozy-600 bg-cozy-100/50 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all";
+                labelCat.className = "border-2 border-slate-200 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all hover:bg-cozy-50";
+            } else {
+                labelCat.className = "border-2 border-cozy-600 bg-cozy-100/50 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all";
+                labelDog.className = "border-2 border-slate-200 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all hover:bg-cozy-50";
+            }
+        }
+
+        function triggerMockUpload() {
+            document.getElementById('realUpload').click();
+        }
+
+        function handleFileSelect() {
+            const fileInput = document.getElementById('realUpload');
+            if(fileInput.files.length > 0) {
+                document.getElementById('uploadStatus').textContent = `📸 Image Loaded: "${fileInput.files[0].name.substring(0, 18)}..."`;
+                showToast("Image loaded! Preset metrics filled below.");
+            }
+        }
+
+        function executeCoreAnalysis() {
+            if(!document.getElementById('petForm').checkValidity()) {
+                showToast("⚠️ Please fill out all core pet parameters first!");
+                return;
+            }
+
+            const type = document.querySelector('input[name="petType"]:checked').value;
+            const name = document.getElementById('petName').value;
+            const breed = document.getElementById('petBreed').value;
+            const age = parseFloat(document.getElementById('petAge').value);
+            const currentWeight = parseFloat(document.getElementById('petWeight').value);
+            const concern = document.getElementById('healthConcern').value;
+
+            const userProtein = parseFloat(document.getElementById('scannedProtein').value) || 0;
+            const userFat = parseFloat(document.getElementById('scannedFat').value) || 0;
+            const userFiber = parseFloat(document.getElementById('scannedFiber').value) || 0;
+
+            const blueprint = breedBaselines[breed] || { min: 4, max: 10, avgIdeal: 6 };
+            const targetWeight = blueprint.avgIdeal; 
+            
+            let targetMessage = "";
+            let targetClass = "";
+            let targetIcon = "";
+
+            if (age < 1.0) {
+                targetMessage = `🌱 **Growth Phase Identified:** ${name} is a developing junior. Do not restrict dietary inputs. Genetic breed metrics indicate a healthy target adult weight expectation of **${targetWeight} kg**. Ensure positive nutritional growth curves.`;
+                targetClass = "bg-emerald-50 border-emerald-200 text-emerald-900";
+                targetIcon = "trending-up";
+            } else if (currentWeight < blueprint.min) {
+                targetMessage = `⚠️ **Underweight Track:** This profile currently charts below the safe adult minimum threshold (**${blueprint.min} kg**) established for a standard ${breed}. Recommending calorie-positive meal updates to safely attain target weight.`;
+                targetClass = "bg-sky-50 border-sky-200 text-sky-900";
+                targetIcon = "plus-circle";
+            } else if (currentWeight > blueprint.max || concern === "Weight") {
+                const excessMass = (currentWeight - targetWeight).toFixed(1);
+                targetMessage = `⚖️ **Weight Management Track:** This profile is holding roughly ${excessMass} kg over the target adult ideal structural weight (**${targetWeight} kg**) for a typical ${breed}. Scaling energy counts back to safely meet baseline targets.`;
+                targetClass = "bg-amber-50 border-amber-200 text-amber-900";
+                targetIcon = "trending-down";
+            } else {
+                targetMessage = `✨ **Ideal Physical Metrics:** ${name} aligns beautifully within the normal genetic baseline bracket for an adult ${breed} (${blueprint.min}-${blueprint.max} kg). Maintain structural maintenance settings!`;
+                targetClass = "bg-cozy-100 border-cozy-400/40 text-cozy-900";
+                targetIcon = "check-circle";
+            }
+
+            let baseWaterMl = Math.round(currentWeight * 55);
+            if (type === "Cat") baseWaterMl = Math.round(currentWeight * 45);
+            if (concern === "Digestion" || concern === "Weight") baseWaterMl = Math.round(baseWaterMl * 1.2); 
+
+            let baseKcal = Math.round(currentWeight * 33 + 70);
+            if (age < 1.0) baseKcal = Math.round(baseKcal * 1.5); 
+
+            let targetProteinMin = type === "Cat" ? 32 : 22;
+            let targetFatMax = type === "Cat" ? 22 : 16;
+
+            if (concern === "Weight") { targetProteinMin += 4; targetFatMax -= 3; }
+            if (concern === "Joints") { targetProteinMin += 2; }
+
+            let verdictHeadline = "";
+            let verdictDetail = "";
+            let verdictClass = "";
+
+            if (userProtein < targetProteinMin) {
+                verdictHeadline = "❌ Inadequate Protein Level Detected";
+                verdictDetail = `Your food label shows ${userProtein}% Protein, which sits under the healthy threshold of ${targetProteinMin}% required to maintain ${name}'s lean muscle profile. Consider switching to a meat-first formula.`;
+                verdictClass = "bg-red-50 border-red-200 text-red-900";
+            } else if (userFat > targetFatMax) {
+                verdictHeadline = "⚠️ Fat Index Over Threshold";
+                verdictDetail = `Detected ${userFat}% Lipids, surpassing the suggested max cap of ${targetFatMax}%. This concentration risks adding fat strain to a ${breed}, especially if dealing with active weight concerns.`;
+                verdictClass = "bg-amber-50 border-amber-200 text-amber-900";
+            } else if (concern === "Digestion" && userFiber < 6) {
+                verdictHeadline = "⚠️ Insufficient Dietary Fiber for Sensitive Digestion";
+                verdictDetail = `Current fiber reading (${userFiber}%) is slightly low for processing loops. Sensitive gastrointestinal systems show improved stabilization with a target closer to 6-10% fiber content.`;
+                verdictClass = "bg-amber-50 border-amber-200 text-amber-900";
+            } else {
+                verdictHeadline = "✅ Excellent Macro Match Verified";
+                verdictDetail = `The current values (${userProtein}% Protein, ${userFat}% Fat) line up soundly alongside automated structural blueprints calculated for this ${breed}. Keep track of standard portion distribution handles.`;
+                verdictClass = "bg-emerald-50 border-emerald-200 text-emerald-900";
+            }
+
+            document.getElementById('repTag').textContent = `${type} Matrix • ${breed}`;
+            document.getElementById('repTitle').textContent = `${name}’s Dynamic Health Assessment`;
+            document.getElementById('repCurrentWeight').textContent = `${currentWeight} kg`;
+            document.getElementById('repTargetWeight').textContent = `${targetWeight} kg`;
+            document.getElementById('repCalories').textContent = `${baseKcal} kcal`;
+            document.getElementById('repWater').textContent = `${baseWaterMl} mL`;
+
+            const directionBanner = document.getElementById('weightDirectionBanner');
+            directionBanner.className = `p-4 rounded-xl border flex gap-3 items-center text-xs ${targetClass}`;
+            directionBanner.innerHTML = `<i data-lucide="${targetIcon}" class="w-5 h-5 shrink-0"></i><div>${targetMessage}</div>`;
+
+            const labelBox = document.getElementById('labelMatchVerdictBox');
+            labelBox.className = `p-4 rounded-xl border space-y-1 text-xs ${verdictClass}`;
+            labelBox.innerHTML = `
+                <div class="font-black flex items-center gap-1.5"><i data-lucide="scan-face" class="w-4 h-4"></i> ${verdictHeadline}</div>
+                <div class="opacity-90 leading-relaxed">${verdictDetail}</div>
+            `;
+
+            document.getElementById('pctProtein').textContent = `${targetProteinMin}% Min Baseline`;
+            document.getElementById('barProtein').style.width = `${targetProteinMin * 2}%`;
+            document.getElementById('pctFat').textContent = `${targetFatMax}% Ideal Max`;
+            document.getElementById('barFat').style.width = `${targetFatMax * 3}%`;
+
+            document.getElementById('repDietary').textContent = concern === "Digestion" 
+                ? "Gastrointestinal support active. Divide food into 3 micro meals. Serve on elevated platforms to mitigate reflux."
+                : "Standard calculated nutrition profile. Always ensure water dishes are refreshed adjacent to food bowl areas.";
+            
+            document.getElementById('repFitness').textContent = concern === "Joints"
+                ? "⚠️ Joint safety: Limit repetitive jumps off tall objects. Substitute hard running loops with indoor hide-and-seek scent puzzles."
+                : "Incorporate regular structural movement. Ensure a minimum of 25 minutes of continuous interactive play daily.";
+
+            document.getElementById('reportPlaceholder').classList.add('hidden');
+            document.getElementById('reportOutput').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // NAVIGATION SWITCHBOARD
+        function switchTab(tabId) {
+            const tabs = ['analyzer', 'matching', 'bookings'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`nav-${t}`);
+                const sec = document.getElementById(`section-${t}`);
+                if (t === tabId) {
+                    sec.classList.remove('hidden');
+                    btn.className = "px-3 py-1.5 rounded-lg font-bold text-xs transition-all text-cozy-800 bg-white shadow-sm flex items-center gap-1";
+                } else {
+                    sec.classList.add('hidden');
+                    btn.className = "px-3 py-1.5 rounded-lg font-bold text-xs transition-all text-cozy-600 hover:text-cozy-900 flex items-center gap-1";
+                }
+            });
+        }
+
+        // DIRECTORY GENERATION
+        function renderNutritionists() {
+            const grid = document.getElementById('nutritionistGrid');
+            grid.innerHTML = '';
+            nutritionists.forEach(exp => {
+                const card = document.createElement('div');
+                card.className = "bg-white border-2 border-cozy-200/60 rounded-2xl p-4 space-y-3 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div class="space-y-2 text-xs">
+                        <div class="flex items-center gap-3">
+                            <div class="${exp.color} w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-inner select-none">${exp.initials}</div>
+                            <div>
+                                <h3 class="font-black text-cozy-900">${exp.name}</h3>
+                                <p class="text-[10px] text-cozy-600 font-bold leading-none">${exp.specialty}</p>
+                            </div>
+                        </div>
+                        <p class="text-cozy-800/80 leading-relaxed">${exp.bio}</p>
+                    </div>
+                    <div class="pt-2 border-t border-cozy-100 flex items-center justify-between gap-2">
+                        <span class="text-xs font-black text-cozy-900">$45 <span class="text-[10px] text-cozy-600/60 font-normal">/ session</span></span>
+                        <button onclick="openBookingModal(${exp.id})" class="px-3 py-1 bg-cozy-600 hover:bg-cozy-800 text-white font-bold text-[11px] rounded-lg transition-colors">
+                            Book Session
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // RESERVATION ACTIONS
+        function openBookingModal(id) {
+            const expert = nutritionists.find(e => e.id === id);
+            if (!expert) return;
+            document.getElementById('expertId').value = expert.id;
+            document.getElementById('modalExpertName').textContent = expert.name;
+            document.getElementById('modalExpertSpecialty').textContent = expert.specialty;
+            document.getElementById('modalExpertIcon').className = `w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg font-bold ${expert.color}`;
+            document.getElementById('modalExpertIcon').textContent = expert.initials;
+            document.getElementById('bookingModal').classList.remove('hidden');
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.getElementById('bookingForm').reset();
+        }
+
+        function confirmBooking(e) {
+            e.preventDefault();
+            const expertId = parseInt(document.getElementById('expertId').value);
+            const date = document.getElementById('bookingDate').value;
+            const time = document.getElementById('bookingTime').value;
+            const expert = nutritionists.find(ex => ex.id === expertId);
+
+            activeBookings.push({
+                id: Date.now(), expertName: expert.name, specialty: expert.specialty,
+                date: date, time: time, color: expert.color, initials: expert.initials
+            });
+
+            closeBookingModal();
+            renderBookings();
+            showToast("Session added to agenda timeline!");
+            switchTab('bookings');
+        }
+
+        function cancelBooking(id) {
+            activeBookings = activeBookings.filter(b => b.id !== id);
+            renderBookings();
+            showToast("Reservation removed.");
+        }
+
+        function renderBookings() {
+            const container = document.getElementById('upcomingContainer');
+            const badge = document.getElementById('bookingBadge');
+            
+            badge.textContent = activeBookings.length;
+            activeBookings.length > 0 ? badge.classList.remove('hidden') : badge.classList.add('hidden');
+
+            container.innerHTML = '';
+            if (activeBookings.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-xs text-cozy-600/60 bg-cozy-50 rounded-xl border border-dashed border-cozy-200">No upcoming expert consultations booked.</div>`;
+                return;
+            }
+
+            activeBookings.forEach(b => {
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between p-3 bg-cozy-50 border border-cozy-200 rounded-xl text-xs gap-2";
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="${b.color} w-8 h-8 rounded-lg flex items-center justify-center text-sm">${b.initials}</div>
+                        <div>
+                            <h4 class="font-bold text-cozy-900">${b.expertName}</h4>
+                            <p class="text-[10px] text-cozy-600 flex items-center gap-2 mt-0.5">
+                                <span>📅 ${b.date}</span> <span>⏰ ${b.time}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="cancelBooking(${b.id})" class="text-[10px] font-bold text-red-600 hover:bg-red-50 px-2 py-1 rounded-lg border border-red-100 transition-colors">Cancel</button>
+                `;
+                container.appendChild(row);
+            });
+            lucide.createIcons();
+        }
+
+        // RENDERS HISTORICAL LOG ITEMS
+        function renderHistoryLog() {
+            const container = document.getElementById('historyContainer');
+            container.innerHTML = '';
+
+            historicBookings.forEach(item => {
+                const row = document.createElement('div');
+                row.className = "py-3 flex justify-between items-center cursor-pointer hover:bg-cozy-100/40 px-2 rounded-xl transition-colors group";
+                row.onclick = () => openHistoryDetailModal(item.id);
+                row.innerHTML = `
+                    <div class="space-y-0.5">
+                        <p class="font-bold text-cozy-900 group-hover:text-cozy-600 transition-colors flex items-center gap-1.5">
+                            <span class="text-xs">${item.initials}</span> ${item.name}
+                        </p>
+                        <p class="text-[11px] text-cozy-600">${item.specialty}</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-right">
+                        <span class="text-cozy-600 bg-cozy-100 px-2 py-0.5 rounded-md font-medium text-[10px]">${item.date}</span>
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-cozy-400 group-hover:text-cozy-600 transition-all"></i>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+            lucide.createIcons();
+        }
+
+        // HISTORY VIEW MODAL ENGINE
+        function openHistoryDetailModal(id) {
+            const record = historicBookings.find(h => h.id === id);
+            if(!record) return;
+
+            document.getElementById('histModalName').textContent = record.name;
+            document.getElementById('histModalSpecialty').textContent = record.specialty;
+            document.getElementById('histModalDate').textContent = record.date;
+            document.getElementById('histModalNotes').textContent = record.notes;
+            
+            const iconDiv = document.getElementById('histModalIcon');
+            iconDiv.className = `w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold shadow-sm ${record.color}`;
+            iconDiv.textContent = record.initials;
+
+            document.getElementById('historyDetailsModal').classList.remove('hidden');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyDetailsModal').classList.add('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+        }
+    </script>
+</body>
+</html>
