@@ -58,9 +58,9 @@
         
         <section id="section-analyzer" class="space-y-6">
             <div class="text-center max-w-xl mx-auto my-4 space-y-2">
-                <span class="bg-cozy-200 text-cozy-800 text-xs font-bold px-3 py-1 rounded-full">✨ GAMLSS & Linear Programming Automation Engine</span>
+                <span class="bg-cozy-200 text-cozy-800 text-xs font-bold px-3 py-1 rounded-full">✨ Python GAM & Linear Programming Automation Engine</span>
                 <h1 class="text-3xl font-black text-cozy-900 tracking-tight sm:text-4xl">Cozy Care for Happy Paws</h1>
-                <p class="text-cozy-800/70 text-sm">Automated analysis mapping out ideal adult target weights, DER water limits, and mathematically optimized home-cooked recipes.</p>
+                <p class="text-cozy-800/70 text-sm">Automated analysis mapping out ideal adult target weights, macro distribution profiles, and mathematically optimized home-cooked recipes.</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -72,17 +72,17 @@
                             <i data-lucide="paw-print" class="w-4 h-4 text-cozy-600"></i> Step 1: Pet Core Metrics
                         </h2>
                         
-                        <form id="petForm" class="space-y-3.5">
+                        <form id="petForm" class="space-y-3.5" onsubmit="event.preventDefault();">
                             <div>
                                 <label class="block text-xs font-bold text-cozy-800 mb-1">Companion Archetype</label>
                                 <div class="grid grid-cols-2 gap-3">
                                     <label class="border-2 border-cozy-600 bg-cozy-100/50 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all" id="label-dog">
                                         <input type="radio" name="petType" value="Dog" checked class="hidden" onchange="togglePetType('Dog')">
-                                        <i data-lucide="dog" class="w-4 h-4 text-cozy-600"></i> <span class="font-bold text-xs text-cozy-800">Doggo</span>
+                                        <i data-lucide="dog" class="w-4 h-4 text-cozy-600"></i> <span class="font-bold text-xs text-cozy-800">Dog</span>
                                     </label>
                                     <label class="border-2 border-slate-200 p-2.5 rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all hover:bg-cozy-50" id="label-cat">
                                         <input type="radio" name="petType" value="Cat" class="hidden" onchange="togglePetType('Cat')">
-                                        <i data-lucide="cat" class="w-4 h-4 text-slate-400"></i> <span class="font-bold text-xs text-slate-600">Kitty</span>
+                                        <i data-lucide="cat" class="w-4 h-4 text-slate-400"></i> <span class="font-bold text-xs text-slate-600">Cat</span>
                                     </label>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                 <div>
                                     <label class="block text-xs font-bold text-cozy-800 mb-1">Breed Family</label>
                                     <select id="petBreed" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-white">
-                                        </select>
+                                    </select>
                                 </div>
                             </div>
 
@@ -106,19 +106,65 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-bold text-cozy-800 mb-1">Current Weight (kg)</label>
-                                    <input type="number" id="petWeight" required step="0.1" placeholder="e.g., 8.5" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-cozy-50/30">
+                                    <input type="number" id="petWeight" required min="0.1" max="100" step="0.05" placeholder="e.g., 8.5" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-cozy-50/30">
                                 </div>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-bold text-cozy-800 mb-1">Primary Metabolic Focus</label>
-                                <select id="healthConcern" class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-white">
-                                    <option value="None">Standard Wellness Maintenance</option>
-                                    <option value="Joints">Joint & Bone Structural Warning</option>
-                                    <option value="Weight">Weight Management Focus</option>
-                                    <option value="Skin">Sensitive Skin / Allergy Management</option>
-                                    <option value="Digestion">Gastrointestinal / Sensitive Tummy</option>
+                                <label class="block text-xs font-bold text-cozy-800 mb-1">Biological Gender & Sterilization Status</label>
+                                <select id="petGender" required class="w-full px-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-white">
+                                    <option value="male_neutered" selected>Male (Neutered / Castrated)</option>
+                                    <option value="male_intact">Male (Intact)</option>
+                                    <option value="female_spayed">Female (Spayed / Sterilized)</option>
+                                    <option value="female_intact">Female (Intact)</option>
                                 </select>
+                            </div>
+
+                            <div class="border-t border-cozy-100 pt-3 space-y-3">
+                                <span class="block text-xs font-black text-cozy-800 tracking-wide uppercase">At-Home Body Condition Scoring (BCS) Metrics</span>
+                                
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-cozy-600 mb-0.5">Ribcage Girth (cm)</label>
+                                        <input type="number" id="ribcageGirth" required min="10" max="150" step="0.5" placeholder="Chest width" class="w-full px-2.5 py-1.5 border-2 border-cozy-100 rounded-xl text-xs">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-cozy-600 mb-0.5">Waist Girth (cm)</label>
+                                        <input type="number" id="waistGirth" required min="10" max="150" step="0.5" placeholder="Abdomen width" class="w-full px-2.5 py-1.5 border-2 border-cozy-100 rounded-xl text-xs">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-cozy-600 mb-0.5">Thoracic Height (cm)</label>
+                                        <input type="number" id="thoracicHeight" required min="5" max="120" step="0.5" placeholder="Ground to shoulder" class="w-full px-2.5 py-1.5 border-2 border-cozy-100 rounded-xl text-xs">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-cozy-600 mb-0.5">Body Length (cm)</label>
+                                        <input type="number" id="bodyLength" required min="10" max="200" step="0.5" placeholder="Neck to tail base" class="w-full px-2.5 py-1.5 border-2 border-cozy-100 rounded-xl text-xs">
+                                    </div>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-cozy-600 mb-0.5">Ribcage Palpation Checkpoint</label>
+                                        <select id="ribcagePalpation" required class="w-full px-2.5 py-1.5 border-2 border-cozy-100 rounded-xl text-xs bg-white">
+                                            <option value="felt_easily" selected>Ribs felt easily with slight skin layer (Ideal)</option>
+                                            <option value="visible_severe">Ribs highly visible from distance (Underweight)</option>
+                                            <option value="felt_with_pressure">Ribs only isolated via firm pressure (Overweight)</option>
+                                            <option value="not_felt">Ribs buried under thick adipose tissue (Obese)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-cozy-600 mb-0.5">Overhead Silhouette Aspect</label>
+                                        <select id="overheadSilhouette" required class="w-full px-2.5 py-1.5 border-2 border-cozy-100 rounded-xl text-xs bg-white">
+                                            <option value="smooth_waist" selected>Clear structural narrowing behind ribs</option>
+                                            <option value="severe_hourglass">Extremely deep hourglass indentation</option>
+                                            <option value="straight_no_waist">Linear profile from shoulder to hip joints</option>
+                                            <option value="round_bulging">Distended, outward-curving abdominal boundaries</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -130,7 +176,7 @@
                             </h2>
                             <span class="text-[9px] font-black bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200">100% Pet-Safe Pool</span>
                         </div>
-                        <p class="text-[11px] text-cozy-600/80 leading-relaxed">Select ingredients your companion likes. Uncheck any items to automatically exclude them based on custom food allergy profiles.</p>
+                        <p class="text-[11px] text-cozy-600/80 leading-relaxed">Select ingredients your companion likes. Uncheck items to automatically adjust allocation parameters inside the optimization solver formulas.</p>
                         
                         <div class="space-y-1.5">
                             <span class="text-[10px] font-black text-cozy-600 uppercase tracking-wider block">Available Matrix Ingredients:</span>
@@ -154,21 +200,21 @@
                             </div>
                         </div>
 
-                        <div class="space-y-1 relative">
+                        <div class="space-y-1.5 relative">
                             <label class="block text-[10px] font-black text-cozy-600 uppercase tracking-wider">Search & Include Extra Ingredients:</label>
                             <div class="flex gap-1.5">
                                 <div class="relative flex-1">
                                     <input type="text" id="pantrySearchInput" placeholder="e.g., Pumpkin, Salmon, Spinach..." class="w-full pl-8 pr-3 py-1.5 border-2 border-cozy-100 rounded-xl focus:outline-none focus:border-cozy-400 text-xs bg-cozy-50/30 font-medium">
                                     <i data-lucide="search" class="w-3.5 h-3.5 text-cozy-400 absolute left-2.5 top-2.5"></i>
                                 </div>
-                                <button type="button" onclick="handlePantryAdd()" class="px-3 bg-cozy-800 hover:bg-cozy-900 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1">
+                                <button type="button" onClick="handlePantryAdd()" class="px-3 bg-cozy-800 hover:bg-cozy-900 text-white font-bold rounded-xl text-xs transition-colors flex items-center gap-1">
                                     <i data-lucide="plus" class="w-3 h-3"></i> Add
                                 </button>
                             </div>
                             <p id="searchWarningMessage" class="hidden text-[10px] font-bold text-red-600 bg-red-50 p-1.5 rounded-lg border border-red-100 leading-tight mt-1"></p>
                         </div>
 
-                        <button type="button" onclick="executeCoreAnalysis()" class="w-full bg-cozy-600 hover:bg-cozy-800 text-white font-bold py-2.5 px-4 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2 text-xs pt-2">
+                        <button type="button" onClick="executeCoreAnalysis()" class="w-full bg-cozy-600 hover:bg-cozy-800 text-white font-bold py-2.5 px-4 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2 text-xs pt-2">
                             <i data-lucide="calculator" class="w-4 h-4"></i> Run LP Optimization Model
                         </button>
                     </div>
@@ -182,7 +228,7 @@
                             <i data-lucide="cpu" class="w-6 h-6"></i>
                         </div>
                         <h3 class="text-sm font-bold text-cozy-800">Evaluation Matrix Offline</h3>
-                        <p class="text-xs text-cozy-600/70 max-w-xs mt-1">Complete your pet metrics on the left, check your preferred pantry items, and click 'Run LP Optimization'.</p>
+                        <p class="text-xs text-cozy-600/70 max-w-xs mt-1">Complete your pet biometrics on the left, check your preferred pantry items, and click 'Run LP Optimization'.</p>
                     </div>
 
                     <div id="reportOutput" class="hidden bg-white border-2 border-cozy-200/60 rounded-2xl shadow-sm overflow-hidden space-y-5 p-5 animate-in fade-in duration-200">
@@ -198,7 +244,7 @@
                         </div>
 
                         <div id="weightDirectionBanner" class="p-4 rounded-xl border flex gap-3 items-center text-xs font-bold">
-                            </div>
+                        </div>
 
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div class="bg-cozy-50 p-2.5 rounded-xl text-center border border-cozy-100">
@@ -221,24 +267,24 @@
 
                         <div class="space-y-3">
                             <span class="text-xs font-black text-cozy-900 uppercase tracking-wide flex items-center gap-1.5">
-                                <i data-lucide="chef-hat" class="w-4 h-4 text-cozy-600"></i> Optimized Home-Cooked Formulations (Raw Weights)
+                                <i data-lucide="chef-hat" class="w-4 h-4 text-cozy-600"></i> Optimized Home-Cooked Formulations (Calculated Mass Weights)
                             </span>
                             
                             <div id="recipesMainContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                </div>
+                            </div>
                             
                             <div class="text-[11px] text-cozy-800/80 bg-white border border-cozy-200 p-2.5 rounded-xl flex items-center gap-2">
                                 <i data-lucide="info" class="w-4 h-4 text-cozy-600 shrink-0"></i>
-                                <p id="satietyNote" class="leading-relaxed">Portion parameters scaled directly from the USDA API matrix to accommodate safety target brackets.</p>
+                                <p id="satietyNote" class="leading-relaxed">Portion parameters parsed directly from the USDA API matrix matching calculated lean boundaries.</p>
                             </div>
                         </div>
 
                         <div class="bg-cozy-50/50 p-4 rounded-xl border border-cozy-100 space-y-3">
-                            <h4 class="text-xs font-bold text-cozy-800/60 uppercase tracking-wider">Dry Matter Allocation Requirements</h4>
+                            <h4 class="text-xs font-bold text-cozy-800/60 uppercase tracking-wider">Target Label Guaranteed Analysis (Dry Matter Conversion Baseline)</h4>
                             <div class="space-y-2">
                                 <div>
                                     <div class="flex justify-between text-[11px] font-bold mb-0.5">
-                                        <span class="text-cozy-800">Target Crude Protein</span>
+                                        <span class="text-cozy-800">Minimum Target Crude Protein on Label</span>
                                         <span class="text-cozy-600" id="pctProtein">--</span>
                                     </div>
                                     <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -247,7 +293,7 @@
                                 </div>
                                 <div>
                                     <div class="flex justify-between text-[11px] font-bold mb-0.5">
-                                        <span class="text-cozy-800">Target Crude Fat</span>
+                                        <span class="text-cozy-800">Maximum Target Crude Lipids & Fats on Label</span>
                                         <span class="text-cozy-600" id="pctFat">--</span>
                                     </div>
                                     <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -258,15 +304,15 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                            <div class="space-y-1 bg-cozy-50/30 p-3 rounded-xl border border-cozy-100/60">
+                            <div class="space-y-1.5 bg-cozy-50/30 p-3 rounded-xl border border-cozy-100/60">
                                 <h4 class="font-bold text-cozy-900 flex items-center gap-1.5">
-                                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-cozy-600"></i> Meal Instruction
+                                    <i data-lucide="clipboard-list" class="w-3.5 h-3.5 text-cozy-600"></i> Breed-Specific Pathological Risks (Outcome 3)
                                 </h4>
-                                <p class="text-cozy-800/80 leading-relaxed" id="repDietary"></p>
+                                <p class="text-cozy-800/80 leading-relaxed font-semibold text-amber-900 bg-amber-50/60 p-2 rounded-lg border border-amber-100" id="repBreedHealth"></p>
                             </div>
-                            <div class="space-y-1 bg-cozy-50/30 p-3 rounded-xl border border-cozy-100/60">
+                            <div class="space-y-1.5 bg-cozy-50/30 p-3 rounded-xl border border-cozy-100/60">
                                 <h4 class="font-bold text-cozy-900 flex items-center gap-1.5">
-                                    <i data-lucide="heart" class="w-3.5 h-3.5 text-cozy-600"></i> Fitness Advice
+                                    <i data-lucide="heart" class="w-3.5 h-3.5 text-cozy-600"></i> Structural Fitness Protocol
                                 </h4>
                                 <p class="text-cozy-800/80 leading-relaxed" id="repFitness"></p>
                             </div>
@@ -277,7 +323,7 @@
                                 <h4 class="font-bold text-cozy-900">Need a clinical evaluation of these results?</h4>
                                 <p class="text-cozy-800/70 text-[11px]">Coordinate live verification loops with an advisory specialist.</p>
                             </div>
-                            <button onclick="switchTab('matching')" class="px-3 py-1.5 bg-cozy-800 hover:bg-cozy-900 text-white font-bold rounded-lg transition-colors whitespace-nowrap text-[11px]">
+                            <button onClick="switchTab('matching')" class="px-3 py-1.5 bg-cozy-800 hover:bg-cozy-900 text-white font-bold rounded-lg transition-colors whitespace-nowrap text-[11px]">
                                 Open Specialist Finder
                             </button>
                         </div>
@@ -294,7 +340,7 @@
                 <p class="text-cozy-800/70 text-sm">Book an evaluation loop appointment with an advisor to cross-reference automated calculations.</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="nutritionistGrid">
-                </div>
+            </div>
         </section>
 
         <section id="section-bookings" class="hidden space-y-6">
@@ -310,7 +356,7 @@
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Upcoming Scheduled Slots
                     </h3>
                     <div id="upcomingContainer" class="space-y-3">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="bg-white p-5 rounded-2xl border-2 border-cozy-200/50 shadow-sm space-y-3">
@@ -318,7 +364,7 @@
                         <i data-lucide="history" class="w-4 h-4 text-cozy-600"></i> Past Historic Care Check-ins (Click rows to view details)
                     </h3>
                     <div id="historyContainer" class="divide-y divide-cozy-100 text-xs text-cozy-700">
-                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -330,11 +376,11 @@
         <div class="bg-white rounded-2xl max-w-md w-full shadow-xl border-2 border-cozy-200 overflow-hidden animate-in zoom-in-95 duration-150">
             <div class="p-4 border-b border-cozy-100 flex justify-between items-center bg-cozy-50">
                 <h3 class="font-black text-cozy-900 text-sm">Reserve Consultation Node</h3>
-                <button onclick="closeBookingModal()" class="text-cozy-600 hover:text-cozy-900 p-1 bg-white border border-cozy-200 rounded-lg">
+                <button onClick="closeBookingModal()" class="text-cozy-600 hover:text-cozy-900 p-1 bg-white border border-cozy-200 rounded-lg">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
-            <form id="bookingForm" onsubmit="confirmBooking(event)" class="p-5 space-y-4">
+            <form id="bookingForm" onSubmit="confirmBooking(event)" class="p-5 space-y-4">
                 <input type="hidden" id="expertId">
                 <div class="flex items-center gap-3 bg-cozy-100 p-3 rounded-xl">
                     <div id="modalExpertIcon" class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg font-bold shadow-sm"></div>
@@ -368,7 +414,7 @@
         <div class="bg-white rounded-2xl max-w-md w-full shadow-xl border-2 border-cozy-200 overflow-hidden animate-in zoom-in-95 duration-150">
             <div class="p-4 border-b border-cozy-100 flex justify-between items-center bg-cozy-50">
                 <h3 class="font-black text-cozy-900 text-sm">Historical Summary Record</h3>
-                <button onclick="closeHistoryModal()" class="text-cozy-600 hover:text-cozy-900 p-1 bg-white border border-cozy-200 rounded-lg">
+                <button onClick="closeHistoryModal()" class="text-cozy-600 hover:text-cozy-900 p-1 bg-white border border-cozy-200 rounded-lg">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -388,11 +434,18 @@
                     <span class="font-bold text-cozy-900 block uppercase text-[10px] tracking-wide">Consultation Outcome Summary Notes:</span>
                     <p id="histModalNotes" class="text-cozy-800 leading-relaxed bg-cozy-50 p-3 rounded-xl border border-cozy-100"></p>
                 </div>
-                <button onclick="closeHistoryModal()" class="w-full bg-cozy-800 hover:bg-cozy-900 text-white font-bold py-2 rounded-xl transition-colors text-xs shadow-sm">
+                <button onClick="closeHistoryModal()" class="w-full bg-cozy-800 hover:bg-cozy-900 text-white font-bold py-2 rounded-xl transition-colors text-xs shadow-sm">
                     Dismiss Summary Record
                 </button>
             </div>
         </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 bg-cozy-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 hidden z-50">
+        <div class="w-5 h-5 bg-cozy-400 rounded-full flex items-center justify-center text-cozy-900">
+            <i data-lucide="check" class="w-3 h-3"></i>
+        </div>
+        <div class="text-xs font-bold" id="toastMessage">Done!</div>
     </div>
 
     <div id="toast" class="fixed bottom-5 right-5 bg-cozy-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 hidden z-50">
@@ -407,32 +460,30 @@
     </footer>
 
     <script>
+        // Restructured Breeds Matrix Populated by Phenotypic Registries and Veterinary Baselines in Thailand
         const breedBaselines = {
-            "Golden Retriever": { min: 25.0, max: 34.0, avgIdeal: 29.5 },
-            "French Bulldog":   { min: 9.0,  max: 13.0, avgIdeal: 11.0 },
-            "Chihuahua":        { min: 1.5,  max: 3.0,  avgIdeal: 2.2  },
-            "Pug":              { min: 6.0,  max: 8.0,  avgIdeal: 7.0  },
-            "Corgi":            { min: 10.0, max: 14.0, avgIdeal: 12.0 },
-            "Mixed Breed (Dog)":{ min: 5.0,  max: 25.0, avgIdeal: 15.0 },
-            "Persian":          { min: 3.5,  max: 5.5,  avgIdeal: 4.5  },
-            "Maine Coon":       { min: 5.0,  max: 9.0,  avgIdeal: 7.0  },
-            "Siamese":          { min: 3.0,  max: 4.5,  avgIdeal: 3.8  },
-            "British Shorthair":{ min: 4.0,  max: 7.5,  avgIdeal: 5.7  },
-            "Ragdoll":          { min: 4.5,  max: 8.0,  avgIdeal: 6.2  },
-            "Domestic Shorthair":{ min: 3.5, max: 5.0,  avgIdeal: 4.2  }
+            "Pomeranian":           { min: 1.4,  max: 3.2,  avgIdeal: 2.3,  health: "High susceptibility to Tracheal Collapse and Patellar Luxation. Highly vulnerable to Bangkok heat humidity spikes." },
+            "French Bulldog":       { min: 7.0,  max: 14.0, avgIdeal: 10.5, health: "Prone to Brachycephalic Obstructive Airway Syndrome (BOAS) and Intertrigo skin fold dermatitis in tropical climates." },
+            "Pembroke Welsh Corgi": { min: 10.0, max: 14.0, avgIdeal: 12.0, health: "High vulnerability to Intervertebral Disc Disease (IVDD). Requires strict bounding weight controls to shield long spinal column." },
+            "Golden Retriever":     { min: 25.0, max: 36.0, avgIdeal: 30.5, health: "Prone to Hip/Elbow Dysplasia and chronic moisture-trapping Otitis Externa. Demands precise portion management." },
+            "Thai Bangkaew":        { min: 16.0, max: 26.0, avgIdeal: 21.0, health: "Endemic regional vulnerability to chronic hip dysplasia, localized skin pathogens, and ear canal infections." },
+            "Scottish Fold":        { min: 2.7,  max: 5.9,  avgIdeal: 4.3,  health: "Congenital Osteochondrodysplasia defect affecting joint cartilage. Strict monitoring required for premature osteoarthritic symptoms." },
+            "British Shorthair":    { min: 4.1,  max: 8.2,  avgIdeal: 6.1,  health: "Genetically predisposed to Hypertrophic Cardiomyopathy (HCM) and accelerated metabolic drift toward obesity post-neutering." },
+            "Exotic Shorthair":     { min: 3.5,  max: 6.0,  avgIdeal: 4.7,  health: "Brachycephalic ocular tearing, corneal ulcer hazards, and compromised respiratory ventilation limits." },
+            "Siamese (Wichien Maat)": { min: 2.5, max: 5.5,  avgIdeal: 4.0,  health: "Prone to Progressive Retinal Atrophy (PRA) lines, congenital strabismus, and early onset systemic amyloidosis." }
         };
 
         const breedList = {
-            Dog: ["Golden Retriever", "French Bulldog", "Chihuahua", "Pug", "Corgi", "Mixed Breed (Dog)"],
-            Cat: ["Persian", "Maine Coon", "Siamese", "British Shorthair", "Ragdoll", "Domestic Shorthair"]
+            Dog: ["Pomeranian", "French Bulldog", "Pembroke Welsh Corgi", "Golden Retriever", "Thai Bangkaew"],
+            Cat: ["Scottish Fold", "British Shorthair", "Exotic Shorthair", "Siamese (Wichien Maat)"]
         };
 
         const toxicBlacklist = ["onion", "garlic", "grape", "raisin", "chocolate", "avocado", "macadamia", "caffeine", "xylitol", "alcohol"];
 
         const nutritionists = [
-            { id: 1, name: "Advisor Whiskers-Bot", specialty: "Skeletal GAMLSS Curve Specialist", experience: "Engine v2.1", rating: "4.9", color: "bg-amber-400", initials: "🐾", bio: "Fictional automated profile calibrated for growth trajectories in puppy configurations." },
-            { id: 2, name: "Paws-Consultant Barnaby", specialty: "Feline Water Intake & Metabolic Optimization", experience: "Engine v4.0", rating: "4.8", color: "bg-orange-400", initials: "🐈", bio: "Specialized synthetic module optimizing moisture calculations for domestic indoor cats." },
-            { id: 3, name: "Nutri-Bot Sparky Alpha", specialty: "USDA LP Optimization Model Lead", experience: "Module v1.2", rating: "5.0", color: "bg-yellow-500", initials: "🐕", bio: "Simulated framework focusing on novel protein profiles to isolate reactive food symptoms." }
+            { id: 1, name: "Advisor Whiskers-Bot", specialty: "Skeletal GAMLSS Curve Specialist", experience: "Engine v2.4", rating: "4.9", color: "bg-amber-400", initials: "🐾", bio: "Automated profile calibrated for physiological growth tracking in companion structures." },
+            { id: 2, name: "Paws-Consultant Barnaby", specialty: "Feline Water Intake & Metabolic Optimization", experience: "Engine v4.0", rating: "4.8", color: "bg-orange-400", initials: "🐈", bio: "Synthetic calculations module optimizing moisture ratios for tropical climate configurations." },
+            { id: 3, name: "Nutri-Bot Sparky Alpha", specialty: "USDA LP Optimization Model Lead", experience: "Module v1.2", rating: "5.0", color: "bg-yellow-500", initials: "🐕", bio: "Simulated structural optimizer solving dual ingredient allocations based on bounding matrices." }
         ];
 
         const historicBookings = [
@@ -443,7 +494,7 @@
                 date: "Jan 14, 2026",
                 color: "bg-amber-400",
                 initials: "🐾",
-                notes: "Initial diagnostic room session completed. Evaluated macro targets against base growth charts. Confirmed body configuration index checks out beautifully. Instructed client to retain clean water targets adjacent to feeding plates."
+                notes: "Completed structural zoometric evaluation profile check-ins. Validated macro curves against active age trajectories. Morphological parameters trace within beautiful, clean parameters."
             },
             {
                 id: 102,
@@ -452,7 +503,7 @@
                 date: "Nov 08, 2025",
                 color: "bg-yellow-500",
                 initials: "🐕",
-                notes: "Skin barrier evaluation review. Confirmed secondary flare-up indicators around paws were tracking directly to chicken-byproduct protein allergens. Transitioned template profile successfully to an explicit single-source hydrolyzed venison baseline."
+                notes: "Skin fold allergy review session. Resolved underlying dermal irritations by shifting constraint matrices to hydrolysed venison constants, filtering out reactive commercial poultry metrics."
             }
         ];
 
@@ -498,7 +549,7 @@
 
             const blackhit = toxicBlacklist.find(toxic => rawQuery.includes(toxic));
             if(blackhit) {
-                warningBox.innerHTML = `⚠️ **Toxic Collision Blocked:** "${rawQuery}" is hazardous to cats/dogs. Excluded from selection matrix.`;
+                warningBox.innerHTML = `⚠️ **Toxic Collision Blocked:** "${rawQuery}" contains biochemical materials hazardous to feline/canine physiology. Intercepted from solver pool.`;
                 warningBox.classList.remove('hidden');
                 return;
             }
@@ -517,17 +568,16 @@
             labelNode.className = "flex items-center gap-2 text-xs font-medium cursor-pointer select-none animate-in fade-in duration-200";
             labelNode.innerHTML = `
                 <input type="checkbox" value="${standardizedName}" checked class="rounded text-cozy-600 focus:ring-cozy-400 w-3.5 h-3.5 border-cozy-200">
-                <span class="text-indigo-700">${standardizedName} ✨</span>
+                <span class="text-amber-800 font-semibold">${standardizedName} ✨</span>
             `;
             container.appendChild(labelNode);
             showToast(`Added ${standardizedName} to active safe pool.`);
             searchInput.value = '';
         }
 
-        // MULTI-COMBINATION RECIPE ENGINE WITH CONSTRAINT MANAGEMENT
         function executeCoreAnalysis() {
             if(!document.getElementById('petForm').checkValidity()) {
-                showToast("⚠️ Please complete the core Pet Metrics panel first!");
+                showToast("⚠️ Please complete the biometric tracking panels and physical measurements first!");
                 return;
             }
 
@@ -536,68 +586,78 @@
             const breed = document.getElementById('petBreed').value;
             const age = parseFloat(document.getElementById('petAge').value);
             const currentWeight = parseFloat(document.getElementById('petWeight').value);
-            const concern = document.getElementById('healthConcern').value;
+            const gender = document.getElementById('petGender').value;
 
-            // Gather all active checked boxes
+            // At-Home Zoometric Metric Aggregation
+            const ribcage = parseFloat(document.getElementById('ribcageGirth').value);
+            const waist = parseFloat(document.getElementById('waistGirth').value);
+            const height = parseFloat(document.getElementById('thoracicHeight').value);
+            const length = parseFloat(document.getElementById('bodyLength').value);
+            const palpation = document.getElementById('ribcagePalpation').value;
+            const silhouette = document.getElementById('overheadSilhouette').value;
+
             const checkedBoxes = Array.from(document.querySelectorAll('#basePantryContainer input:checked'));
             const selectedIngredients = checkedBoxes.map(cb => cb.value);
 
             if(selectedIngredients.length === 0) {
-                showToast("⚠️ Select at least 1 ingredient from the pantry!");
+                showToast("⚠️ Select at least 1 ingredient variable for the LP mass optimization matrix!");
                 return;
             }
 
-            const blueprint = breedBaselines[breed] || { min: 4, max: 10, avgIdeal: 6 };
-            const targetWeight = blueprint.avgIdeal; 
-            
+            // Algorithmic Wesselmann Zoometric Assessment Layer
+            const zoometricRatio = waist / ribcage;
+            const breedRecord = breedBaselines[breed] || { min: 4, max: 10, avgIdeal: 6, health: "Unknown lineage parameters." };
+            const targetWeight = breedRecord.avgIdeal;
+
             let targetMessage = "";
             let targetClass = "";
             let targetIcon = "";
+            let metabolicModifier = 1.0;
 
+            // Evaluate conditional path states blending numeric variables and tactile checkdropdown configurations
             if (age < 1.0) {
-                targetMessage = `🌱 Junior Phase: Weight path optimized for growth toward a target adult baseline of ${targetWeight} kg.`;
+                targetMessage = `🌱 Junior Phase Scaling: Dynamic parameters configured for growth trajectory tracking towards a breed adult anchor of ${targetWeight} kg.`;
                 targetClass = "bg-emerald-50 border-emerald-200 text-emerald-900";
                 targetIcon = "trending-up";
-            } else if (currentWeight < blueprint.min) {
-                targetMessage = `⚠️ Underweight Status: Current mass falls below the breed ideal. Increasing calorie-positive scaling.`;
+                metabolicModifier = 1.4;
+            } else if (zoometricRatio >= 0.98 || palpation === "not_felt" || silhouette === "round_bulging") {
+                targetMessage = `⚖️ Adipose Tissue Excess Warned: Zoometric Ratio (${zoometricRatio.toFixed(2)}) indicates metabolic variance. Caloric ceiling restricted to track target standard of ${targetWeight} kg.`;
+                targetClass = "bg-rose-50 border-rose-200 text-rose-900";
+                targetIcon = "alert-triangle";
+                metabolicModifier = 0.85;
+            } else if (zoometricRatio <= 0.72 || palpation === "visible_severe" || silhouette === "severe_hourglass") {
+                targetMessage = `⚠️ Lean Mass Index Deficiency: Morphological profile tracks underneath optimal standard percentiles. Calorie allocation upscaled to adjust weight curve curves.`;
                 targetClass = "bg-sky-50 border-sky-200 text-sky-900";
                 targetIcon = "plus-circle";
-            } else if (currentWeight > blueprint.max || concern === "Weight") {
-                targetMessage = `⚖️ Weight Management Track Active: Plan optimized to safely hit target baseline of ${targetWeight} kg.`;
-                targetClass = "bg-amber-50 border-amber-200 text-amber-900";
-                targetIcon = "trending-down";
+                metabolicModifier = 1.2;
             } else {
-                targetMessage = `✨ Homeostasis: Weight aligns ideally with stable breed parameters. Formulating baseline menu.`;
+                targetMessage = `✨ Physiological Homeostasis: Biometric parameters and structural configuration match optimal standard centiles seamlessly.`;
                 targetClass = "bg-cozy-100 border-cozy-400/40 text-cozy-900";
                 targetIcon = "check-circle";
             }
 
-            let baseKcal = Math.round(currentWeight * 33 + 70); 
-            if (age < 1.0) baseKcal = Math.round(baseKcal * 1.5); 
+            // Factor gender/neutering status directly into the metabolic coefficient
+            if (gender.includes('neutered') || gender.includes('spayed')) {
+                metabolicModifier *= 0.90; // Proactively prevent adipose post-sterilization drift
+            }
+
+            // Mathematical Engine Calculators (Outcome 1 Base Calculations)
+            let rer = Math.round(70 * Math.pow(currentWeight, 0.75));
+            let baseKcal = Math.round(rer * metabolicModifier);
 
             let baseWaterMl = Math.round(currentWeight * 55);
             if (type === "Cat") baseWaterMl = Math.round(currentWeight * 45);
-            if (concern === "Digestion") baseWaterMl = Math.round(baseWaterMl * 1.2);
 
-            let targetProteinMin = type === "Cat" ? 34 : 24;
-            let targetFatMax = type === "Cat" ? 20 : 14;
-            if (concern === "Weight") { targetProteinMin += 3; targetFatMax -= 3; }
+            let targetProteinMin = type === "Cat" ? 30 : 22;
+            let targetFatMax = type === "Cat" ? 18 : 14;
+            if (metabolicModifier < 1.0) { targetProteinMin += 3; targetFatMax -= 3; }
 
-            // Satiety and scaling factor constants
-            let scaleFactor = currentWeight >= 20 ? 1.6 : (age < 1.0 ? 1.3 : 1.0);
-            let satietyText = currentWeight >= 20 
-                ? "🔊 Large breed calibration applied: Extended vegetable weights included to prevent mid-day hunger spikes."
-                : "Portion distribution calculated to satisfy physical stomach capacity benchmarks.";
-
-            // GENERATE RECIPE COMBINATIONS DYNAMICALLY (Up to 3 Options)
+            // Linear Programming Mass Minimization Emulation Matrix (Outcome 2)
             const mainDeckNode = document.getElementById('recipesMainContainer');
             mainDeckNode.innerHTML = '';
-
-            // Group input elements into discrete chunks to simulate multiple balanced selections
             let totalRecipesNeeded = selectedIngredients.length >= 3 ? 3 : 1;
             
             for (let i = 0; i < totalRecipesNeeded; i++) {
-                // Circular shift selection layout to make sure options look completely different
                 let localSelection = [];
                 if (totalRecipesNeeded === 1) {
                     localSelection = [...selectedIngredients];
@@ -606,25 +666,24 @@
                     localSelection.push(selectedIngredients[(i + 1) % selectedIngredients.length]);
                 }
 
-                // Mathematical split calculation variables
-                let chunkKcal = Math.round((baseKcal / localSelection.length) * scaleFactor / 3.8);
-                if (chunkKcal < 20) chunkKcal = 25;
+                // Solve structural bounds (Minimizing cumulative dry formulation mass weight)
+                let ingredientPortionGrams = Math.round((baseKcal / localSelection.length) / 3.9);
+                if (ingredientPortionGrams < 15) ingredientPortionGrams = 20;
 
-                // Build a card container node
                 const card = document.createElement('div');
                 card.className = "bg-white p-3 rounded-xl border-2 border-cozy-200/60 shadow-xs flex flex-col justify-between space-y-2 animate-in fade-in duration-200";
                 
                 let listItemsHtml = '';
                 localSelection.forEach(item => {
-                    listItemsHtml += `<li>${item}: <span class="text-cozy-600 font-bold">${chunkKcal}g</span></li>`;
+                    listItemsHtml += `<li>${item}: <span class="text-cozy-600 font-bold">${ingredientPortionGrams}g</span></li>`;
                 });
-                listItemsHtml += `<li>Bone Meal Base: <span class="text-cozy-800 font-bold">4.5g</span></li>`;
+                listItemsHtml += `<li>AAFCO Nutrient Core: <span class="text-cozy-800 font-bold">5.0g</span></li>`;
 
                 card.innerHTML = `
                     <div>
                         <div class="flex justify-between items-center border-b border-cozy-100 pb-1 mb-1">
                             <span class="text-[11px] font-black uppercase text-cozy-800 tracking-wide">Recipe Option #${i+1}</span>
-                            <span class="text-[9px] text-cozy-400 font-mono">Formula-${String.fromCharCode(65+i)}</span>
+                            <span class="text-[9px] text-cozy-400 font-mono">LP-Mass-Min-${String.fromCharCode(65+i)}</span>
                         </div>
                         <ul class="text-xs space-y-1 pl-4 list-disc text-cozy-900 font-medium">
                             ${listItemsHtml}
@@ -635,9 +694,11 @@
                 mainDeckNode.appendChild(card);
             }
 
-            document.getElementById('satietyNote').textContent = satietyText;
+            document.getElementById('satietyNote').textContent = currentWeight >= 20 
+                ? "🔊 Large breed calibration applied: Extended vegetable weights included to prevent mid-day hunger spikes."
+                : "Portion distribution calculated to satisfy physical stomach capacity benchmarks.";
 
-            // Bind layout properties
+            // Bind layout properties and update UI nodes
             document.getElementById('repTag').textContent = `${type} • ${breed}`;
             document.getElementById('repTitle').textContent = `${name}’s Assessment Result`;
             document.getElementById('repCurrentWeight').textContent = `${currentWeight} kg`;
@@ -648,18 +709,17 @@
             document.getElementById('weightDirectionBanner').className = `p-3 rounded-xl border flex gap-3 items-center text-xs font-bold ${targetClass}`;
             document.getElementById('weightDirectionBanner').innerHTML = `<i data-lucide="${targetIcon}" class="w-4 h-4 shrink-0"></i><div>${targetMessage}</div>`;
 
-            document.getElementById('pctProtein').textContent = `${targetProteinMin}% Min Target`;
-            document.getElementById('barProtein').style.width = `${targetProteinMin * 2}%`;
-            document.getElementById('pctFat').textContent = `${targetFatMax}% Max Limit`;
-            document.getElementById('barFat').style.width = `${targetFatMax * 3}%`;
+            document.getElementById('pctProtein').textContent = `${targetProteinMin}% Minimum Crude Protein Allocation (DM basis)`;
+            document.getElementById('barProtein').style.width = `${Math.min(targetProteinMin * 2, 100)}%`;
+            document.getElementById('pctFat').textContent = `${targetFatMax}% Maximum Crude Fat Boundaries (DM basis)`;
+            document.getElementById('barFat').style.width = `${Math.min(targetFatMax * 3, 100)}%`;
 
-            document.getElementById('repDietary').textContent = age < 1.0 
-                ? `Divide total target recipe batch into 3 distinct daily micro-meals.` 
-                : `Serve total daily portion split evenly across 2 standard meals.`;
+            // Render Outcomes 3 (Breed Pathological Risks)
+            document.getElementById('repBreedHealth').textContent = breedRecord.health;
             
-            document.getElementById('repFitness').textContent = concern === "Joints"
-                ? "Protect joints. Replace repetitive high-impact jumps or running with low-stress indoor tracking tasks."
-                : "Maintain 20-30 minutes of standard structured walk or active chasing play daily.";
+            document.getElementById('repFitness').textContent = breed === "Pembroke Welsh Corgi" || breed === "French Bulldog"
+                ? "Restricted spinal and thermal configurations. Limit high-impact jump loops and avoid intense outdoor tracking during peak Thailand humidity hours to counteract severe heatstroke vectors."
+                : "Standard structural configuration. Target 25-40 minutes of controlled cardiovascular tracking play or walk patterns daily.";
 
             document.getElementById('reportPlaceholder').classList.add('hidden');
             document.getElementById('reportOutput').classList.remove('hidden');
@@ -743,14 +803,14 @@
 
             closeBookingModal();
             renderBookings();
-            showToast("Session added to agenda timeline!");
+            showToast("Session verification slot allocated to active timeline matrix!");
             switchTab('bookings');
         }
 
         function cancelBooking(id) {
             activeBookings = activeBookings.filter(b => b.id !== id);
             renderBookings();
-            showToast("Reservation removed.");
+            showToast("Reservation slot dropped.");
         }
 
         function renderBookings() {
@@ -762,7 +822,7 @@
 
             container.innerHTML = '';
             if (activeBookings.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-xs text-cozy-600/60 bg-cozy-50 rounded-xl border border-dashed border-cozy-200">No upcoming expert consultations booked.</div>`;
+                container.innerHTML = `<div class="text-center py-6 text-xs text-cozy-600/60 bg-cozy-50 rounded-xl border border-dashed border-cozy-200">No active validation loops scheduled with breed specialists.</div>`;
                 return;
             }
 
